@@ -1,4 +1,4 @@
-import { usePlayer } from "../../context/PlayerContext";
+import { usePlayer } from "../context/PlayerContext";
 import Controls from "./Controls";
 import ProgressBar from "./ProgressBar";
 import Volume from "./Volume";

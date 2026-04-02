@@ -1,4 +1,4 @@
-import { usePlayer } from "../../context/PlayerContext";
+import { usePlayer } from "../context/PlayerContext";
 
 export default function Volume() {
     const { volumen, cambiarVolumen } = usePlayer();

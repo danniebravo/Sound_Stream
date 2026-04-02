@@ -1,4 +1,4 @@
-import { usePlayer } from "../../context/PlayerContext";
+import { usePlayer } from "../context/PlayerContext";
 
 export default function SongCard({ song, colaCanciones = [], indice = 0, mostrarIndice = false }) {
     const { cancionActual, reproduciendo, reproducir, pausarReanudar } = usePlayer();

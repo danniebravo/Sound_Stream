@@ -1,4 +1,4 @@
-import { usePlayer } from "../../context/PlayerContext";
+import { usePlayer } from "../context/PlayerContext";
 
 export default function Controls({ tamaño = "md" }) {
     const { cancionActual, reproduciendo, pausarReanudar, siguiente, anterior } = usePlayer();
