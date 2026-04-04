@@ -1,121 +1,97 @@
-import { useState } from 'react'
-import reactLogo from './assets/react.svg'
-import viteLogo from './assets/vite.svg'
-import heroImg from './assets/hero.png'
-import './App.css'
+import MainLayout from "./components/layout/MainLayout.jsx";
+import Button from "./components/ui/Button.jsx";
+import Input from "./components/ui/Input.jsx";
+import Modal from "./components/ui/Modal.jsx";
+import Loader from "./components/ui/Loader.jsx";
+import Notificacion from "./components/ui/Notificacion.jsx";
 
 function App() {
-  const [count, setCount] = useState(0)
-
   return (
-    <>
-      <section id="center">
-        <div className="hero">
-          <img src={heroImg} className="base" width="170" height="179" alt="" />
-          <img src={reactLogo} className="framework" alt="React logo" />
-          <img src={viteLogo} className="vite" alt="Vite logo" />
-        </div>
-        <div>
-          <h1>Get started</h1>
-          <p>
-            Edit <code>src/App.jsx</code> and save to test <code>HMR</code>
-          </p>
-        </div>
-        <button
-          className="counter"
-          onClick={() => setCount((count) => count + 1)}
-        >
-          Count is {count}
-        </button>
-      </section>
+    <MainLayout>
+      {/* Header */}
+      <div className="mb-8">
+        <h1 className="text-2xl font-bold text-text">Panel principal</h1>
+        <p className="text-text-muted text-sm mt-1">
+          Vista previa de los componentes del sistema de interfaz
+        </p>
+      </div>
 
-      <div className="ticks"></div>
-
-      <section id="next-steps">
-        <div id="docs">
-          <svg className="icon" role="presentation" aria-hidden="true">
-            <use href="/icons.svg#documentation-icon"></use>
-          </svg>
-          <h2>Documentation</h2>
-          <p>Your questions, answered</p>
-          <ul>
-            <li>
-              <a href="https://vite.dev/" target="_blank">
-                <img className="logo" src={viteLogo} alt="" />
-                Explore Vite
-              </a>
-            </li>
-            <li>
-              <a href="https://react.dev/" target="_blank">
-                <img className="button-icon" src={reactLogo} alt="" />
-                Learn more
-              </a>
-            </li>
-          </ul>
+      {/* Grid de cards */}
+      <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
+        {/* Botones */}
+        <div className="bg-surface rounded-xl p-6 border border-border">
+          <div className="flex items-center gap-2 mb-5">
+            <span className="material-symbols-outlined text-primary text-xl">smart_button</span>
+            <h2 className="text-base font-semibold text-text">Botones</h2>
+          </div>
+          <div className="flex flex-wrap items-center gap-3">
+            <Button variant="primary">Primary</Button>
+            <Button variant="secondary">Secondary</Button>
+            <Button variant="ghost">Ghost</Button>
+          </div>
         </div>
-        <div id="social">
-          <svg className="icon" role="presentation" aria-hidden="true">
-            <use href="/icons.svg#social-icon"></use>
-          </svg>
-          <h2>Connect with us</h2>
-          <p>Join the Vite community</p>
-          <ul>
-            <li>
-              <a href="https://github.com/vitejs/vite" target="_blank">
-                <svg
-                  className="button-icon"
-                  role="presentation"
-                  aria-hidden="true"
-                >
-                  <use href="/icons.svg#github-icon"></use>
-                </svg>
-                GitHub
-              </a>
-            </li>
-            <li>
-              <a href="https://chat.vite.dev/" target="_blank">
-                <svg
-                  className="button-icon"
-                  role="presentation"
-                  aria-hidden="true"
-                >
-                  <use href="/icons.svg#discord-icon"></use>
-                </svg>
-                Discord
-              </a>
-            </li>
-            <li>
-              <a href="https://x.com/vite_js" target="_blank">
-                <svg
-                  className="button-icon"
-                  role="presentation"
-                  aria-hidden="true"
-                >
-                  <use href="/icons.svg#x-icon"></use>
-                </svg>
-                X.com
-              </a>
-            </li>
-            <li>
-              <a href="https://bsky.app/profile/vite.dev" target="_blank">
-                <svg
-                  className="button-icon"
-                  role="presentation"
-                  aria-hidden="true"
-                >
-                  <use href="/icons.svg#bluesky-icon"></use>
-                </svg>
-                Bluesky
-              </a>
-            </li>
-          </ul>
-        </div>
-      </section>
 
-      <div className="ticks"></div>
-      <section id="spacer"></section>
-    </>
-  )
+        {/* Input / Búsqueda */}
+        <div className="bg-surface rounded-xl p-6 border border-border">
+          <div className="flex items-center gap-2 mb-5">
+            <span className="material-symbols-outlined text-primary text-xl">text_fields</span>
+            <h2 className="text-base font-semibold text-text">Campos de texto</h2>
+          </div>
+          <div className="space-y-3">
+            <Input icon="search" placeholder="Buscar canciones..." />
+            <Input icon="person" placeholder="Nombre de usuario..." />
+          </div>
+        </div>
+
+        {/* Loader */}
+        <div className="bg-surface rounded-xl p-6 border border-border">
+          <div className="flex items-center gap-2 mb-5">
+            <span className="material-symbols-outlined text-primary text-xl">progress_activity</span>
+            <h2 className="text-base font-semibold text-text">Estado de carga</h2>
+          </div>
+          <div className="flex items-center gap-6">
+            <div className="flex flex-col items-center gap-2">
+              <Loader size="w-8 h-8" />
+              <span className="text-text-muted text-xs">Pequeño</span>
+            </div>
+            <div className="flex flex-col items-center gap-2">
+              <Loader />
+              <span className="text-text-muted text-xs">Normal</span>
+            </div>
+            <div className="flex flex-col items-center gap-2">
+              <Loader size="w-14 h-14" />
+              <span className="text-text-muted text-xs">Grande</span>
+            </div>
+          </div>
+        </div>
+
+        {/* Notificaciones */}
+        <div className="bg-surface rounded-xl p-6 border border-border">
+          <div className="flex items-center gap-2 mb-5">
+            <span className="material-symbols-outlined text-primary text-xl">notifications</span>
+            <h2 className="text-base font-semibold text-text">Notificaciones</h2>
+          </div>
+          <div className="space-y-3">
+            <Notificacion fixed={false} tipo="exito" mensaje="Playlist creada correctamente" />
+            <Notificacion fixed={false} tipo="error" mensaje="Error al reproducir la canción" />
+          </div>
+        </div>
+
+        {/* Modal inline */}
+        <div className="bg-surface rounded-xl p-6 border border-border lg:col-span-2">
+          <div className="flex items-center gap-2 mb-5">
+            <span className="material-symbols-outlined text-primary text-xl">web_asset</span>
+            <h2 className="text-base font-semibold text-text">Modal</h2>
+          </div>
+          <div className="flex justify-center">
+            <Modal title="Nueva playlist" overlay={false}>
+              Escribe el nombre de tu nueva playlist y selecciona las canciones que quieres agregar.
+            </Modal>
+          </div>
+        </div>
+      </div>
+    </MainLayout>
+  );
 }
 
-export default App
+export default App;
