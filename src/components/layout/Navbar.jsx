@@ -1,4 +1,8 @@
+import { useTheme } from "../context/ThemeContext";
+
 export default function Navbar() {
+  const { tema, toggleTema } = useTheme();
+
   return (
     <nav className="sticky top-0 z-10 bg-surface border-b border-border flex items-center justify-between px-6 py-3">
       {/* Izquierda: navegación + búsqueda */}
@@ -23,8 +27,14 @@ export default function Navbar() {
 
       {/* Derecha: tema + avatar */}
       <div className="flex items-center gap-4">
-        <button className="w-8 h-8 rounded-full bg-bg flex items-center justify-center text-text hover:opacity-80 cursor-pointer">
-          <span className="material-symbols-outlined text-lg">dark_mode</span>
+        <button
+          onClick={toggleTema}
+          title={tema === "dark" ? "Cambiar a modo claro" : "Cambiar a modo oscuro"}
+          className="w-8 h-8 rounded-full bg-bg flex items-center justify-center text-text hover:opacity-80 cursor-pointer transition-transform hover:scale-110"
+        >
+          <span className="material-symbols-outlined text-lg">
+            {tema === "dark" ? "light_mode" : "dark_mode"}
+          </span>
         </button>
         <div className="flex items-center gap-2 bg-bg rounded-full pl-1 pr-3 py-1 cursor-pointer hover:opacity-80">
           <div className="w-7 h-7 rounded-full bg-primary flex items-center justify-center text-white text-xs font-bold">
