@@ -1,4 +1,3 @@
-import { useState } from "react";
 import { useTheme } from "../context/ThemeContext";
 import { ThemeProvider } from "../context/ThemeContext";
 
@@ -21,76 +20,7 @@ function Campo({ icono, label, type = "text", placeholder, extra }) {
     );
 }
 
-function LoginForm({ onIrRegistro }) {
-    return (
-        <>
-            <div className="mb-8">
-                <h1 className="text-3xl font-bold text-text mb-2">Bienvenido</h1>
-                <p className="text-text-muted text-sm leading-relaxed">Ingresa tus credenciales para acceder a tu cuenta</p>
-            </div>
-
-            <div className="space-y-5">
-                <Campo icono="mail" label="Correo Electrónico" type="email" placeholder="nombre@email.com" />
-                <Campo
-                    icono="lock"
-                    label="Contraseña"
-                    type="password"
-                    placeholder="••••••••"
-                    extra={
-                        <div className="flex justify-end -mt-1">
-                            <a className="text-primary text-xs font-semibold hover:underline" href="#">¿Olvidaste tu contraseña?</a>
-                        </div>
-                    }
-                />
-                <button className="w-full py-4 bg-primary text-white font-bold rounded-xl hover:opacity-90 active:scale-[0.98] transition-all shadow-lg shadow-primary/20 cursor-pointer">
-                    Iniciar Sesión
-                </button>
-            </div>
-
-            <div className="relative my-8">
-                <div className="absolute inset-0 flex items-center">
-                    <span className="w-full border-t border-border" />
-                </div>
-                <div className="relative flex justify-center text-xs uppercase">
-                    <span className="bg-surface px-3 text-text-muted font-medium tracking-wider">SoundStream</span>
-                </div>
-            </div>
-
-            <p className="text-center text-sm text-text-muted">
-                ¿No tienes una cuenta?{" "}
-                <button onClick={onIrRegistro} className="text-primary font-bold hover:underline cursor-pointer">Crear una cuenta</button>
-            </p>
-        </>
-    );
-}
-
-function RegistroForm({ onIrLogin }) {
-    return (
-        <>
-            <h2 className="text-3xl font-bold text-text mb-2">Crear cuenta</h2>
-            <p className="text-text-muted text-sm leading-relaxed mb-8">Únete a nuestra comunidad musical</p>
-
-            <div className="space-y-5">
-                <Campo icono="person" label="Nombre" type="text" placeholder="nombre" />
-                <Campo icono="badge" label="Nombre Usuario" type="text" placeholder="usuario" />
-                <Campo icono="mail" label="Correo" type="email" placeholder="email@ejemplo.com" />
-                <Campo icono="lock" label="Contraseña" type="password" placeholder="••••••••" />
-                <Campo icono="image" label="Avatar URL (Opcional)" type="url" placeholder="https://..." />
-                <button className="w-full py-4 bg-primary text-white font-bold rounded-xl hover:opacity-90 transition-all shadow-lg shadow-primary/20 cursor-pointer">
-                    Registrarse
-                </button>
-            </div>
-
-            <p className="text-center mt-8 text-sm text-text-muted">
-                ¿Ya tienes una cuenta?{" "}
-                <button onClick={onIrLogin} className="text-primary font-bold hover:underline cursor-pointer">Iniciar sesión</button>
-            </p>
-        </>
-    );
-}
-
-function LoginRegistroInner() {
-    const [vista, setVista] = useState("login");
+function RegistroInner() {
     const { tema, toggleTema } = useTheme();
 
     return (
@@ -125,10 +55,24 @@ function LoginRegistroInner() {
                     />
 
                     <div className="p-8">
-                        {vista === "login"
-                            ? <LoginForm onIrRegistro={() => setVista("registro")} />
-                            : <RegistroForm onIrLogin={() => setVista("login")} />
-                        }
+                        <h2 className="text-3xl font-bold text-text mb-2">Crear cuenta</h2>
+                        <p className="text-text-muted text-sm leading-relaxed mb-8">Únete a nuestra comunidad musical</p>
+
+                        <div className="space-y-5">
+                            <Campo icono="person" label="Nombre" type="text" placeholder="nombre" />
+                            <Campo icono="badge" label="Nombre Usuario" type="text" placeholder="usuario" />
+                            <Campo icono="mail" label="Correo" type="email" placeholder="email@ejemplo.com" />
+                            <Campo icono="lock" label="Contraseña" type="password" placeholder="••••••••" />
+                            <Campo icono="image" label="Avatar URL (Opcional)" type="url" placeholder="https://..." />
+                            <button className="w-full py-4 bg-primary text-white font-bold rounded-xl hover:opacity-90 transition-all shadow-lg shadow-primary/20 cursor-pointer">
+                                Registrarse
+                            </button>
+                        </div>
+
+                        <p className="text-center mt-8 text-sm text-text-muted">
+                            ¿Ya tienes una cuenta?{" "}
+                            <a href="/login" className="text-primary font-bold hover:underline cursor-pointer">Iniciar sesión</a>
+                        </p>
                     </div>
                 </div>
 
@@ -143,10 +87,10 @@ function LoginRegistroInner() {
     );
 }
 
-export default function LoginRegistro() {
+export default function Registro() {
     return (
         <ThemeProvider>
-            <LoginRegistroInner />
+            <RegistroInner />
         </ThemeProvider>
     );
 }
