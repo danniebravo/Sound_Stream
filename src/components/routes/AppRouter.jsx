@@ -1,5 +1,6 @@
 import { BrowserRouter, Routes, Route } from 'react-router-dom';
 import Login from '../pages/Login';
+import Register from '../pages/Register';
 import Home from '../pages/Home';
 import Buscar from '../pages/Buscar';
 import Perfil from '../pages/Perfil';
@@ -13,6 +14,7 @@ export default function AppRouter() {
             <Routes>
                 <Route path="/" element={<Navigate to="/login" replace />} />
                 <Route path="/login" element={<Login />} />
+                <Route path="/register" element={<Register />} />
                 <Route path="/home" element={<Home />} />
                 <Route path="/buscar" element={<Buscar />} />
                 <Route path="/perfil" element={<Perfil />} />
