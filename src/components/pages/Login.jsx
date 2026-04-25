@@ -1,7 +1,9 @@
 import { useState } from "react";
+import axios from "axios";
+import { useNavigate } from "react-router-dom";
 import { ThemeProvider, useTheme } from "../context/ThemeContext";
 
-function Campo({ icono, label, tipo = "text", placeholder, extra }) {
+function Campo({ icono, label, tipo = "text", placeholder, extra, value, onChange }) {
     return (
         <div className="space-y-2">
             <div className="flex items-center justify-between px-1">
@@ -14,6 +16,8 @@ function Campo({ icono, label, tipo = "text", placeholder, extra }) {
                 </span>
                 <input
                     type={tipo}
+                    value={value}
+                    onChange={onChange}
                     placeholder={placeholder}
                     className="w-full pl-12 pr-4 py-3.5 bg-surface border border-border rounded-xl text-text placeholder:text-text-muted/60 focus:ring-2 focus:ring-primary/20 focus:border-primary outline-none transition-all"
                 />
@@ -23,8 +27,27 @@ function Campo({ icono, label, tipo = "text", placeholder, extra }) {
 }
 
 function LoginInner() {
-    const [vista, setVista] = useState("login"); // "login" | "registro"
+    const [vista, setVista] = useState("login");
     const { tema, toggleTema } = useTheme();
+    const navigate = useNavigate();
+
+    // Estados del login
+    const [correo, setCorreo] = useState("");
+    const [contrasena, setContrasena] = useState("");
+    const [error, setError] = useState("");
+
+    const handleLogin = async () => {
+        try {
+            const response = await axios.post("http://localhost:8080/api/usuarios/login", {
+                correo,
+                contrasena,
+            });
+            console.log("Usuario:", response.data);
+            navigate("/home");
+        } catch (err) {
+            setError("Correo o contraseña incorrectos");
+        }
+    };
 
     return (
         <div className="relative min-h-screen w-full flex flex-col items-center justify-center p-4 bg-bg">
@@ -58,8 +81,6 @@ function LoginInner() {
                     />
 
                     <div className="p-8">
-
-                        {/* ── LOGIN ── */}
                         {vista === "login" && (
                             <>
                                 <div className="mb-8">
@@ -68,19 +89,33 @@ function LoginInner() {
                                 </div>
 
                                 <div className="space-y-5">
-                                    <Campo icono="mail" label="Correo Electrónico" tipo="email" placeholder="nombre@email.com" />
+                                    <Campo
+                                        icono="mail"
+                                        label="Correo Electrónico"
+                                        tipo="email"
+                                        placeholder="nombre@email.com"
+                                        value={correo}
+                                        onChange={e => setCorreo(e.target.value)}
+                                    />
                                     <Campo
                                         icono="lock"
                                         label="Contraseña"
                                         tipo="password"
                                         placeholder="••••••••"
+                                        value={contrasena}
+                                        onChange={e => setContrasena(e.target.value)}
                                         extra={
                                             <a href="#" className="text-primary text-xs font-semibold hover:underline">
                                                 ¿Olvidaste tu contraseña?
                                             </a>
                                         }
                                     />
-                                    <button className="w-full py-4 bg-primary text-white font-bold rounded-xl hover:opacity-90 active:scale-[0.98] transition-all shadow-lg shadow-primary/20 cursor-pointer">
+
+                                    {error && <p className="text-red-500 text-sm text-center">{error}</p>}
+
+                                    <button
+                                        onClick={handleLogin}
+                                        className="w-full py-4 bg-primary text-white font-bold rounded-xl hover:opacity-90 active:scale-[0.98] transition-all shadow-lg shadow-primary/20 cursor-pointer">
                                         Iniciar Sesión
                                     </button>
                                 </div>
@@ -102,38 +137,9 @@ function LoginInner() {
                                 </p>
                             </>
                         )}
-
-                        {/* ── REGISTRO ── */}
-                        {vista === "registro" && (
-                            <>
-                                <div className="mb-8">
-                                    <h1 className="text-3xl font-bold text-text mb-2">Crear cuenta</h1>
-                                    <p className="text-text-muted text-sm">Únete a nuestra comunidad musical</p>
-                                </div>
-
-                                <div className="space-y-5">
-                                    <Campo icono="person" label="Nombre" tipo="text" placeholder="nombre" />
-                                    <Campo icono="badge" label="Nombre Usuario" tipo="text" placeholder="usuario" />
-                                    <Campo icono="mail" label="Correo" tipo="email" placeholder="email@ejemplo.com" />
-                                    <Campo icono="lock" label="Contraseña" tipo="password" placeholder="••••••••" />
-                                    <Campo icono="image" label="Avatar URL (Opcional)" tipo="url" placeholder="https://..." />
-                                    <button className="w-full py-4 bg-primary text-white font-bold rounded-xl hover:opacity-90 transition-all shadow-lg shadow-primary/20 cursor-pointer">
-                                        Registrarse
-                                    </button>
-                                </div>
-
-                                <p className="text-center mt-8 text-sm text-text-muted">
-                                    ¿Ya tienes una cuenta?{" "}
-                                    <button onClick={() => setVista("login")} className="text-primary font-bold hover:underline cursor-pointer">
-                                        Iniciar sesión
-                                    </button>
-                                </p>
-                            </>
-                        )}
                     </div>
                 </div>
 
-                {/* Policy links */}
                 <div className="mt-8 flex justify-center gap-6 text-xs text-text-muted font-medium">
                     <a href="#" className="hover:text-primary transition-colors">Privacy Policy</a>
                     <a href="#" className="hover:text-primary transition-colors">Terms of Service</a>
