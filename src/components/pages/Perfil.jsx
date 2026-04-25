@@ -3,8 +3,8 @@ import MainLayout from "../layout/MainLayout";
 import SongList from "../music/SongList";
 
 const usuario = {
-    nombre: "Alex Harrison",
-    handle: "@alex_music",
+    nombre: "Pepito Pérez",
+    handle: "@pepito_perez",
     avatar: "https://picsum.photos/200/200?random=99",
 };
 
