@@ -13,7 +13,7 @@ export default function Sidebar() {
 
             {/* Navegación */}
             <nav className="flex flex-col gap-1 flex-1">
-                <Link to="/home" className={`flex items-center gap-3 px-3 py-2.5 rounded-lg text-sm font-medium no-underline ${location.pathname === "/home" ? "bg-primary/10 text-primary" : "text-text hover:bg-primary/10"}`}>
+                <Link to="/inicio" className={`flex items-center gap-3 px-3 py-2.5 rounded-lg text-sm font-medium no-underline ${location.pathname === "/inicio" ? "bg-primary/10 text-primary" : "text-text hover:bg-primary/10"}`}>
                     <span className="material-symbols-outlined text-xl">home</span>
                     Inicio
                 </Link>

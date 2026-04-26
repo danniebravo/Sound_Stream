@@ -18,7 +18,7 @@ const albumesEjemplo = [
     { collectionId: 5, collectionName: "Neon Nights", artistName: "Daft Punk", artworkUrl100: "https://picsum.photos/300/300?random=24", trackCount: 11 },
 ];
 
-export default function Home() {
+export default function Inicio() {
     return (
         <MainLayout>
             {/* Bienvenida */}

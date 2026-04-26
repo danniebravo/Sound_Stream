@@ -2,6 +2,7 @@ import { useState } from "react";
 import axios from "axios";
 import { useNavigate } from "react-router-dom";
 import { ThemeProvider, useTheme } from "../context/ThemeContext";
+import Notificacion from "../ui/Notificacion";
 
 function Campo({ icono, label, tipo = "text", placeholder, extra, value, onChange }) {
     return (
@@ -34,7 +35,7 @@ function LoginInner() {
     // Estados del login
     const [correo, setCorreo] = useState("");
     const [contrasena, setContrasena] = useState("");
-    const [error, setError] = useState("");
+    const [notificacion, setNotificacion] = useState(null);
 
     const handleLogin = async () => {
         try {
@@ -43,9 +44,10 @@ function LoginInner() {
                 contrasena,
             });
             console.log("Usuario:", response.data);
-            navigate("/home");
+            setNotificacion({ tipo: "exito", mensaje: "Ingresando a SoundStream" });
+            setTimeout(() => navigate("/inicio"), 1500);
         } catch (err) {
-            setError("Correo o contraseña incorrectos");
+            setNotificacion({ tipo: "error", mensaje: "Correo o contraseña incorrectos" });
         }
     };
 
@@ -111,7 +113,9 @@ function LoginInner() {
                                         }
                                     />
 
-                                    {error && <p className="text-red-500 text-sm text-center">{error}</p>}
+                                    {notificacion && (
+                                        <Notificacion tipo={notificacion.tipo} mensaje={notificacion.mensaje} fixed={true} />
+                                    )}
 
                                     <button
                                         onClick={handleLogin}
@@ -131,7 +135,7 @@ function LoginInner() {
 
                                 <p className="text-center text-sm text-text-muted">
                                     ¿No tienes una cuenta?{" "}
-                                    <button onClick={() => setVista("registro")} className="text-primary font-bold hover:underline cursor-pointer">
+                                    <button onClick={() => navigate("/registro")} className="text-primary font-bold hover:underline cursor-pointer">
                                         Crear una cuenta
                                     </button>
                                 </p>
