@@ -66,6 +66,7 @@ Las rutas privadas usan el componente `PrivateRoute` que verifica si existe un u
 - Lombok
 
 ## Estructura del proyecto
+```jsx  
 src/
 ├── components/
 │   ├── context/        # ThemeContext, PlayerContext
@@ -75,3 +76,4 @@ src/
 │   ├── player/         # Player, Controls, ProgressBar, Volume
 │   ├── routes/         # AppRouter, PrivateRoute
 │   └── ui/             # Button, Input, Loader, Notificacion, Modal
+```
