@@ -13,20 +13,23 @@ Aplicación web de música construida con React + Vite en el frontend y Spring B
 
 ## Instalación
 
-### Frontend
+### Requisitos
+- Node.js 18+
+- Java 17
+- Maven
 
+### Frontend
 ```bash
-git clone https://github.com/TU_USUARIO/Sound_Stream.git
+git clone https://github.com/ECelis18/Sound_Stream.git
 cd Sound_Stream
 npm install
 npm run dev
 ```
 
 ### Backend
-
 ```bash
-git clone https://github.com/TU_USUARIO/Sound_Stream_API.git
-cd Sound_Stream_API
+git clone https://github.com/ECelis18/Sound_Stream_Backend.git
+cd Sound_Stream_Backend
 ./mvnw spring-boot:run
 ```
 
@@ -49,10 +52,26 @@ Las rutas privadas usan el componente `PrivateRoute` que verifica si existe un u
 
 ## Tecnologías
 
+### Frontend
 - React 18 + Vite
 - Tailwind CSS
 - React Router DOM
 - Axios
-- Spring Boot
-- H2 Database / Por ahora
+
+### Backend
+- Java 17
+- Spring Boot 3.5.14
+- Spring Data JPA
+- H2 Database *(temporal, migración a SQL Server pendiente)*
 - Lombok
+
+## Estructura del proyecto
+src/
+├── components/
+│   ├── context/        # ThemeContext, PlayerContext
+│   ├── layout/         # MainLayout, Sidebar, Navbar
+│   ├── music/          # SongCard, SongList, AlbumCard, ArtistCard
+│   ├── pages/          # Inicio, Buscar, Biblioteca, Perfil, Login, Registro
+│   ├── player/         # Player, Controls, ProgressBar, Volume
+│   ├── routes/         # AppRouter, PrivateRoute
+│   └── ui/             # Button, Input, Loader, Notificacion, Modal
