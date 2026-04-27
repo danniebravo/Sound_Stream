@@ -20,7 +20,7 @@ Aplicación web de música construida con React + Vite en el frontend y Spring B
 
 ### Frontend
 ```bash
-git clone https://github.com/ECelis18/Sound_Stream.git
+https://github.com/danniebravo/Sound_Stream/tree/develop
 cd Sound_Stream
 npm install
 npm run dev
