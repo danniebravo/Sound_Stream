@@ -27,7 +27,7 @@ function Campo({ icono, label, tipo = "text", placeholder, extra, value, onChang
     );
 }
 
-function LoginInner() {
+function LoginInner({onLogin}) {
     const [vista, setVista] = useState("login");
     const { tema, toggleTema } = useTheme();
     const navigate = useNavigate();
@@ -43,6 +43,8 @@ function LoginInner() {
                 correo,
                 contrasena,
             });
+            onLogin();
+            navigate("/inicio");
             console.log("Usuario:", response.data);
             setNotificacion({ tipo: "exito", mensaje: "Ingresando a SoundStream" });
             setTimeout(() => navigate("/inicio"), 1500);
@@ -154,10 +156,10 @@ function LoginInner() {
     );
 }
 
-export default function Login() {
+export default function Login({ onLogin }) {
     return (
         <ThemeProvider>
-            <LoginInner />
+            <LoginInner onLogin={onLogin} />
         </ThemeProvider>
     );
 }

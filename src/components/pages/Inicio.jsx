@@ -18,9 +18,9 @@ const albumesEjemplo = [
     { collectionId: 5, collectionName: "Neon Nights", artistName: "Daft Punk", artworkUrl100: "https://picsum.photos/300/300?random=24", trackCount: 11 },
 ];
 
-export default function Inicio() {
+export default function Inicio({onLogout}) {
     return (
-        <MainLayout>
+        <MainLayout onLogout={onLogout}>
             {/* Bienvenida */}
             <section className="mb-10">
                 <div className="flex items-center justify-between mb-6">
