@@ -1,12 +1,8 @@
 import { useState } from "react";
+import axios from "axios";
 import MainLayout from "../layout/MainLayout";
 import SongList from "../music/SongList";
 
-const usuario = {
-    nombre: "Pepito Pérez",
-    handle: "@pepito_perez",
-    avatar: "https://picsum.photos/200/200?random=99",
-};
 
 const stats = [
     { label: "Playlists", valor: 12, subtexto: "Creadas por ti", icono: "library_music" },
@@ -29,32 +25,63 @@ const favoritosEjemplo = [
 
 // ── Modal editar perfil ──────────────────────────────────────────
 function ModalEditarPerfil({ onCerrar }) {
+    //Cargar usuario desde localStorage
+    const usuarioGuardado = JSON.parse(localStorage.getItem("usuario")) || {};
+    const [nombre, setNombre] = useState(usuarioGuardado.nombre);
+    const [avatar, setAvatar] = useState(usuarioGuardado.avatar);
+    const [contrasena, setContrasena] = useState("");
+
+    //
+    const guardar = async () => {
+        try {
+            const response = await axios.put(`http://localhost:8080/api/usuarios/${usuarioGuardado.id}`, {
+                nombre: nombre || usuarioGuardado.nombre,
+                nombreUsuario: usuarioGuardado.nombreUsuario,
+                correo: usuarioGuardado.correo,
+                contrasena: contrasena || usuarioGuardado.contrasena,
+                avatar: avatar || usuarioGuardado.avatar,
+            });
+            localStorage.setItem("usuario", JSON.stringify(response.data));
+            onCerrar();
+            window.location.reload();
+        } catch (err) {
+            console.error("Error al actualizar perfil:", err);
+        }
+    };
+
+
     return (
         <div className="fixed inset-0 z-[80] flex items-center justify-center p-4">
             <div className="absolute inset-0 bg-black/60 backdrop-blur-sm" onClick={onCerrar} />
             <div className="relative bg-bg border border-border rounded-2xl shadow-2xl w-full max-w-sm p-6 z-10">
                 <h3 className="text-base font-black text-text mb-4">Editar Perfil</h3>
                 <div className="flex gap-3 items-center mb-4">
-                    <div className="size-14 rounded-xl bg-border border border-border shrink-0 overflow-hidden flex items-center justify-center">
-                        <span className="material-symbols-outlined text-text-muted">person</span>
+                    <div className="size-14 rounded-xl bg-border border border-border shrink-0 overflow-hidden">
+                        {avatar ? (
+                            <img src={avatar} alt="avatar" className="w-full h-full object-cover" />
+                        ) : (
+                            <div className="w-full h-full flex items-center justify-center">
+                                <span className="material-symbols-outlined text-text-muted">person</span>
+                            </div>
+                        )}
                     </div>
                     <div className="flex-1">
                         <label className="block text-xs font-bold text-text-muted uppercase tracking-wider mb-1">URL Avatar</label>
-                        <input type="url" placeholder="https://..." className="input-sp w-full" />
+                        <input type="url" value={avatar} onChange={(e) => setAvatar(e.target.value)} className="input-sp w-full" />
                     </div>
                 </div>
                 <div className="space-y-3">
                     <div>
                         <label className="block text-xs font-bold text-text-muted uppercase tracking-wider mb-1">Nombre *</label>
-                        <input type="text" defaultValue={usuario.nombre} className="input-sp w-full" />
+                        <input type="text" value={nombre} onChange={(e) => setNombre(e.target.value)} className="input-sp w-full" />
                     </div>
                     <div>
                         <label className="block text-xs font-bold text-text-muted uppercase tracking-wider mb-1">Nueva contraseña</label>
-                        <input type="password" placeholder="••••••••" className="input-sp w-full" />
+                        <input type="password" value={contrasena} onChange={(e) => setContrasena(e.target.value)} placeholder="••••••••" className="input-sp w-full" />
                     </div>
                 </div>
                 <div className="flex gap-2 mt-5">
-                    <button className="flex-1 py-2.5 bg-primary text-white font-bold text-sm rounded-xl hover:opacity-90 cursor-pointer">Guardar</button>
+                    <button onClick={guardar} className="flex-1 py-2.5 bg-primary text-white font-bold text-sm rounded-xl hover:opacity-90 cursor-pointer">Guardar</button>
                     <button onClick={onCerrar} className="flex-1 py-2.5 bg-surface border border-border text-text font-bold text-sm rounded-xl hover:opacity-80 cursor-pointer">Cancelar</button>
                 </div>
             </div>
@@ -63,11 +90,15 @@ function ModalEditarPerfil({ onCerrar }) {
 }
 
 // ── Componente principal ─────────────────────────────────────────
-export default function Perfil() {
+export default function Perfil({ onLogout }) {
     const [modalEditar, setModalEditar] = useState(false);
 
+    //Cargar usuario desde localStorage
+    const [usuario, setUsuario] = useState(() => {
+        return JSON.parse(localStorage.getItem("usuario")) || {};
+    });
     return (
-        <MainLayout>
+        <MainLayout onLogout={onLogout}>
             <div className="max-w-3xl mx-auto">
 
                 {/* Avatar + nombre */}
@@ -87,7 +118,7 @@ export default function Perfil() {
                     </div>
                     <div className="text-center">
                         <h1 className="text-3xl font-bold tracking-tight text-text">{usuario.nombre}</h1>
-                        <p className="text-text-muted text-base mt-1">{usuario.handle}</p>
+                        <p className="text-text-muted text-base mt-1">{usuario.nombreUsuario}</p>
                     </div>
                     <button
                         onClick={() => setModalEditar(true)}

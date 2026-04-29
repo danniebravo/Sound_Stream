@@ -50,12 +50,13 @@ function ModalPlaylist({ onCerrar }) {
 }
 
 // ── Componente principal ─────────────────────────────────────────
-export default function Biblioteca() {
-    const [tab, setTab] = useState("playlists"); // "playlists" | "liked"
+export default function Biblioteca({ onLogout }) {
+    
+    const [tab, setTab] = useState("playlists");
     const [modalOpen, setModal] = useState(false);
 
     return (
-        <MainLayout>
+        <MainLayout onLogout={onLogout}>
             {/* Título + tabs + botón */}
             <div className="flex items-center justify-between mb-8">
                 <div>

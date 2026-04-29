@@ -43,6 +43,8 @@ function LoginInner({onLogin}) {
                 correo,
                 contrasena,
             });
+            //Guardar en localStorage
+            localStorage.setItem("usuario", JSON.stringify(response.data));
             onLogin();
             navigate("/inicio");
             console.log("Usuario:", response.data);

@@ -35,13 +35,13 @@ const tabs = [
     { id: "albums", label: "Álbumes" },
 ];
 
-export default function Buscar() {
+export default function Buscar({ onLogout }) {
     const [filtro, setFiltro] = useState("todo");
     const [query, setQuery] = useState("");
     const hayQuery = query.trim().length > 0;
 
     return (
-        <MainLayout>
+        <MainLayout onLogout={onLogout}>
             {/* Tabs */}
             <div className="-mx-6 -mt-6 px-6 border-b border-border mb-8">
                 <div className="flex gap-8">

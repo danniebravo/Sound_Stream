@@ -1,8 +1,8 @@
 import MainLayout from "../layout/MainLayout";
 
-export default function NotFound() {
+export default function NotFound({ onLogout }) {
     return (
-        <MainLayout >
+        <MainLayout onLogout={onLogout}>
             <div className="flex flex-col items-center justify-center h-full py-20 text-center">
                 <span className="material-symbols-outlined text-8xl text-primary/30 mb-6">music_off</span>
                 <h1 className="text-6xl font-black text-text mb-3">404</h1>
