@@ -20,7 +20,7 @@ Aplicación web de música construida con React + Vite en el frontend y Spring B
 
 ### Frontend
 ```bash
-git clone https://github.com/ECelis18/Sound_Stream.git
+https://github.com/danniebravo/Sound_Stream/tree/develop
 cd Sound_Stream
 npm install
 npm run dev
@@ -66,6 +66,7 @@ Las rutas privadas usan el componente `PrivateRoute` que verifica si existe un u
 - Lombok
 
 ## Estructura del proyecto
+```jsx  
 src/
 ├── components/
 │   ├── context/        # ThemeContext, PlayerContext
@@ -75,3 +76,4 @@ src/
 │   ├── player/         # Player, Controls, ProgressBar, Volume
 │   ├── routes/         # AppRouter, PrivateRoute
 │   └── ui/             # Button, Input, Loader, Notificacion, Modal
+```
