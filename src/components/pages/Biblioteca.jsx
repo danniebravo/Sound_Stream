@@ -82,7 +82,7 @@ export default function Biblioteca({ onLogout }) {
     const [cargando, setCargando] = useState(false);
     const [notificacion, setNotificacion] = useState(null);
 
-    const usuario = JSON.parse(localStorage.getItem("usuario") || "{}");
+    const usuario = JSON.parse(sessionStorage.getItem("usuario") || "{}");
     const usuarioId = usuario.id;
 
     useEffect(() => {

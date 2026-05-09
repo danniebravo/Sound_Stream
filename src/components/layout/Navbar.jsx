@@ -6,7 +6,7 @@ export default function Navbar() {
   const navigate = useNavigate();
 
   //
-  const usuario = JSON.parse(localStorage.getItem("usuario") || "{}");
+  const usuario = JSON.parse(sessionStorage.getItem("usuario") || "{}");
 
   return (
     <nav className="sticky top-0 z-10 bg-surface border-b border-border flex items-center px-10 py-3">

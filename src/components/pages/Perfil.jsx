@@ -26,7 +26,7 @@ function ModalEditarPerfil({ usuario, onCerrar, onActualizado }) {
                 rol: usuario.rol,
             };
             const res = await axios.put(`http://localhost:8080/api/usuarios/${usuario.id}`, body);
-            localStorage.setItem("usuario", JSON.stringify(res.data));
+            sessionStorage.setItem("usuario", JSON.stringify(res.data));
             onActualizado(res.data);
             onCerrar();
         } catch {
@@ -197,7 +197,7 @@ function ModalAdmin({ onCerrar }) {
 
 // ── Componente principal ─────────────────────────────────────────
 export default function Perfil({ onLogout }) {
-    const [usuario, setUsuario] = useState(() => JSON.parse(localStorage.getItem("usuario")) || {});
+    const [usuario, setUsuario] = useState(() => JSON.parse(sessionStorage.getItem("usuario") || "{}"));
     const [playlists, setPlaylists] = useState([]);
     const [favoritos, setFavoritos] = useState([]);
     const [playlistSeleccionada, setPlaylistSeleccionada] = useState(null);

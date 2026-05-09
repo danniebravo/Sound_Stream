@@ -44,7 +44,7 @@ function LoginInner({onLogin}) {
                 contrasena,
             });
             //Guardar en localStorage
-            localStorage.setItem("usuario", JSON.stringify(response.data));
+            sessionStorage.setItem("usuario", JSON.stringify(response.data));
             onLogin();
             navigate("/inicio");
             console.log("Usuario:", response.data);
@@ -110,11 +110,6 @@ function LoginInner({onLogin}) {
                                         placeholder="••••••••"
                                         value={contrasena}
                                         onChange={e => setContrasena(e.target.value)}
-                                        extra={
-                                            <a href="#" className="text-primary text-xs font-semibold hover:underline">
-                                                ¿Olvidaste tu contraseña?
-                                            </a>
-                                        }
                                     />
 
                                     {notificacion && (

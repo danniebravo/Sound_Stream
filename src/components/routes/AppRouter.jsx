@@ -8,14 +8,14 @@ import NotFound from '../pages/NotFound';
 import Biblioteca from '../pages/Biblioteca';
 
 export default function AppRouter() {
-    const isAuthenticated = localStorage.getItem("usuario") !== null;
+    const isAuthenticated = sessionStorage.getItem("usuario") !== null;
 
     const handleLogin = () => {
         window.location.href = "/inicio";
     };
 
     const handleLogout = () => {
-        localStorage.removeItem("usuario");
+        sessionStorage.removeItem("usuario");
         window.location.href = "/login";
     };
 

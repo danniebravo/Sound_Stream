@@ -5,7 +5,7 @@ export default function ModalAgregarPlaylist({ song, onCerrar }) {
     const [playlists, setPlaylists] = useState([]);
     const [notificacion, setNotificacion] = useState(null);
 
-    const usuario = JSON.parse(localStorage.getItem("usuario") || "{}");
+    const usuario = JSON.parse(sessionStorage.getItem("usuario") || "{}");
 
     useEffect(() => {
         const cargar = async () => {
