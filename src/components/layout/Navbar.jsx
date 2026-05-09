@@ -23,14 +23,14 @@ export default function Navbar() {
           <span className="material-symbols-outlined text-lg">arrow_forward</span>
         </button>
         <div className="relative ml-3 flex-1 max-w-xl">
-          <span className="material-symbols-outlined absolute left-4 top-1/2 -translate-y-1/2 text-text-muted text-lg pointer-events-none">
+          {/* <span className="material-symbols-outlined absolute left-4 top-1/2 -translate-y-1/2 text-text-muted text-lg pointer-events-none">
             search
-          </span>
-          <input
+          </span> */}
+          {/* <input
             type="text"
             placeholder="Buscar..."
             className="w-full rounded-xl border border-border bg-surface py-3 pl-14 pr-4 text-text outline-none"
-          />
+          /> */}
         </div>
       </div>
 
