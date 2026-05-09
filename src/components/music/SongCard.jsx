@@ -21,7 +21,8 @@ export default function SongCard({ song, colaCanciones = [], indice = 0, mostrar
         return `${minutos}:${segundos}`;
     };
 
-    const portada = song.artworkUrl100?.replace("100x100", "60x60") ?? null;
+    const rawPortada = song.artworkUrl100 ?? song.artworkUrl ?? null;
+    const portada = rawPortada?.replace("100x100", "60x60") ?? rawPortada;
 
     return (
         <>

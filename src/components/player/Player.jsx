@@ -5,7 +5,8 @@ import Volume from "./Volume";
 
 export default function Player() {
     const { cancionActual, favorito, cambiarFavorito } = usePlayer();
-    const cover = cancionActual?.artworkUrl100?.replace("100x100", "60x60") ?? null;
+    const rawCover = cancionActual?.artworkUrl100 ?? cancionActual?.artworkUrl ?? null;
+    const cover = rawCover?.replace("100x100", "60x60") ?? rawCover;
 
     return (
         <footer className="fixed bottom-0 left-0 right-0 h-24 bg-surface border-t border-border flex items-center px-6 z-20">
