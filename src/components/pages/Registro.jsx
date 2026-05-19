@@ -34,6 +34,7 @@ function RegistroInner() {
     const [correo, setCorreo] = useState("");
     const [contrasena, setContrasena] = useState("");
     const [avatar, setAvatar] = useState("");
+    const [rol, setRol] = useState("usuario"); // 👈 nuevo estado
     const [notificacion, setNotificacion] = useState(null);
 
     const handleRegistro = async () => {
@@ -44,6 +45,7 @@ function RegistroInner() {
                 correo,
                 contrasena,
                 avatar,
+                rol,               // 👈 se envía el rol
             });
             setNotificacion({ tipo: "exito", mensaje: "Registro exitoso. Redirigiendo..." });
             setTimeout(() => navigate("/login"), 2000);
@@ -51,10 +53,10 @@ function RegistroInner() {
             setNotificacion({ tipo: "error", mensaje: "Error al registrar. Intenta de nuevo." });
         }
     };
+
     return (
         <div className="relative flex min-h-screen w-full flex-col items-center justify-center p-4 bg-bg">
-
-            {/* Header */}
+            {/* Header igual que antes */}
             <header className="fixed top-0 left-0 w-full flex items-center justify-between px-6 md:px-10 py-4 bg-bg/80 backdrop-blur-md border-b border-border z-50">
                 <div className="flex items-center gap-2">
                     <div className="size-10 bg-primary rounded-lg flex items-center justify-center text-white">
@@ -72,11 +74,8 @@ function RegistroInner() {
                 </button>
             </header>
 
-            {/* Card */}
             <main className="w-full max-w-[480px] mt-16">
                 <div className="bg-surface rounded-xl shadow-xl border border-border overflow-hidden">
-
-                    {/* Imagen header */}
                     <div
                         className="w-full h-48 bg-cover bg-center"
                         style={{ backgroundImage: `url('${IMAGEN_HEADER}')` }}
@@ -92,6 +91,23 @@ function RegistroInner() {
                             <Campo icono="mail" label="Correo" type="email" placeholder="email@ejemplo.com" value={correo} onChange={e => setCorreo(e.target.value)} />
                             <Campo icono="lock" label="Contraseña" type="password" placeholder="••••••••" value={contrasena} onChange={e => setContrasena(e.target.value)} />
                             <Campo icono="image" label="Avatar URL (Opcional)" type="url" placeholder="https://..." value={avatar} onChange={e => setAvatar(e.target.value)} />
+
+                            {/* 👇 Selector de rol */}
+                            <div className="space-y-2">
+                                <label className="text-text text-sm font-semibold block px-1">Rol</label>
+                                <div className="relative">
+                                    <span className="material-symbols-outlined absolute left-4 top-1/2 -translate-y-1/2 text-text-muted text-xl">admin_panel_settings</span>
+                                    <select
+                                        value={rol}
+                                        onChange={e => setRol(e.target.value)}
+                                        className="w-full pl-12 pr-4 py-3.5 bg-surface border border-border rounded-xl text-text appearance-none focus:ring-2 focus:ring-primary/20 focus:border-primary outline-none transition-all cursor-pointer"
+                                    >
+                                        <option value="usuario">Usuario</option>
+                                        <option value="admin">Administrador</option>
+                                    </select>
+                                </div>
+                            </div>
+
                             {notificacion && (
                                 <Notificacion tipo={notificacion.tipo} mensaje={notificacion.mensaje} />
                             )}
@@ -107,7 +123,6 @@ function RegistroInner() {
                     </div>
                 </div>
 
-                {/* Policy links */}
                 <div className="mt-8 flex justify-center gap-6 text-xs text-text-muted font-medium">
                     <a className="hover:text-primary transition-colors cursor-pointer">Privacy Policy</a>
                     <a className="hover:text-primary transition-colors cursor-pointer">Terms of Service</a>
