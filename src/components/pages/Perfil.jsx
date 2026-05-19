@@ -4,7 +4,7 @@ import MainLayout from "../layout/MainLayout";
 import SongList from "../music/SongList";
 import ModalVerPlaylist from "../music/ModalVerPlaylist";
 
-// ── Modal Editar Perfil ──────────────────────────────────────────
+// ── Modal Editar Perfil (propio) ──────────────────────────────────────────
 function ModalEditarPerfil({ usuario, onCerrar, onActualizado }) {
     const [nombre, setNombre] = useState(usuario.nombre ?? "");
     const [avatar, setAvatar] = useState(usuario.avatar ?? "");
@@ -86,18 +86,139 @@ function ModalEditarPerfil({ usuario, onCerrar, onActualizado }) {
     );
 }
 
-// ── Modal Admin: ver todos los usuarios ─────────────────────────
+// ── Modal Editar Usuario (por Administrador) ─────────────────────────────
+function ModalEditarUsuarioAdmin({ usuario, onCerrar, onActualizado }) {
+    const [nombre, setNombre] = useState(usuario.nombre ?? "");
+    const [nombreUsuario, setNombreUsuario] = useState(usuario.nombreUsuario ?? "");
+    const [correo, setCorreo] = useState(usuario.correo ?? "");
+    const [avatar, setAvatar] = useState(usuario.avatar ?? "");
+    const [rol, setRol] = useState(usuario.rol ?? "usuario");
+    const [contrasena, setContrasena] = useState("");
+    const [guardando, setGuardando] = useState(false);
+    const [error, setError] = useState("");
+
+    const guardar = async () => {
+        if (!nombre.trim()) { setError("El nombre es obligatorio"); return; }
+        setGuardando(true);
+        setError("");
+        try {
+            const body = {
+                nombre,
+                nombreUsuario,
+                correo,
+                contrasena: contrasena || undefined, // si está vacío, no mandar o mandar null (backend decide)
+                avatar,
+                rol,
+            };
+            const res = await axios.put(`http://localhost:8080/api/usuarios/${usuario.id}`, body);
+            onActualizado(res.data);
+            onCerrar();
+        } catch (err) {
+            setError("Error al guardar. Intenta de nuevo.");
+        } finally {
+            setGuardando(false);
+        }
+    };
+
+    return (
+        <div className="fixed inset-0 z-[95] flex items-center justify-center p-4">
+            <div className="absolute inset-0 bg-black/60 backdrop-blur-sm" onClick={onCerrar} />
+            <div className="relative bg-bg border border-border rounded-2xl shadow-2xl w-full max-w-sm p-6 z-10">
+                <h3 className="text-base font-black text-text mb-4">Editar Usuario (Admin)</h3>
+
+                <div className="flex gap-3 items-center mb-4">
+                    <div className="size-14 rounded-xl bg-border border border-border shrink-0 overflow-hidden">
+                        {avatar ? (
+                            <img src={avatar} alt="avatar" className="w-full h-full object-cover" />
+                        ) : (
+                            <div className="w-full h-full flex items-center justify-center">
+                                <span className="material-symbols-outlined text-text-muted">person</span>
+                            </div>
+                        )}
+                    </div>
+                    <div className="flex-1">
+                        <label className="block text-xs font-bold text-text-muted uppercase tracking-wider mb-1">URL Avatar</label>
+                        <input type="url" value={avatar} onChange={e => setAvatar(e.target.value)} className="input-sp w-full" placeholder="https://..." />
+                    </div>
+                </div>
+
+                <div className="space-y-3">
+                    <div>
+                        <label className="block text-xs font-bold text-text-muted uppercase tracking-wider mb-1">Nombre *</label>
+                        <input type="text" value={nombre} onChange={e => setNombre(e.target.value)} className="input-sp w-full" />
+                    </div>
+                    <div>
+                        <label className="block text-xs font-bold text-text-muted uppercase tracking-wider mb-1">Nombre de usuario</label>
+                        <input type="text" value={nombreUsuario} onChange={e => setNombreUsuario(e.target.value)} className="input-sp w-full" />
+                    </div>
+                    <div>
+                        <label className="block text-xs font-bold text-text-muted uppercase tracking-wider mb-1">Correo</label>
+                        <input type="email" value={correo} onChange={e => setCorreo(e.target.value)} className="input-sp w-full" />
+                    </div>
+                    <div>
+                        <label className="block text-xs font-bold text-text-muted uppercase tracking-wider mb-1">Nueva contraseña</label>
+                        <input type="password" value={contrasena} onChange={e => setContrasena(e.target.value)} placeholder="Dejar en blanco para no cambiar" className="input-sp w-full" />
+                    </div>
+                    <div>
+                        <label className="block text-xs font-bold text-text-muted uppercase tracking-wider mb-1">Rol</label>
+                        <select value={rol} onChange={e => setRol(e.target.value)} className="input-sp w-full">
+                            <option value="usuario">Usuario</option>
+                            <option value="admin">Administrador</option>
+                        </select>
+                    </div>
+                </div>
+
+                {error && <p className="text-red-500 text-xs mt-3">{error}</p>}
+
+                <div className="flex gap-2 mt-5">
+                    <button onClick={guardar} disabled={guardando}
+                        className="flex-1 py-2.5 bg-primary text-white font-bold text-sm rounded-xl hover:opacity-90 cursor-pointer disabled:opacity-60">
+                        {guardando ? "Guardando..." : "Guardar"}
+                    </button>
+                    <button onClick={onCerrar}
+                        className="flex-1 py-2.5 bg-surface border border-border text-text font-bold text-sm rounded-xl hover:opacity-80 cursor-pointer">
+                        Cancelar
+                    </button>
+                </div>
+            </div>
+        </div>
+    );
+}
+
+// ── Modal Admin: ver todos los usuarios + editar/eliminar ─────────────────
 function ModalAdmin({ onCerrar }) {
     const [usuarios, setUsuarios] = useState([]);
     const [cargando, setCargando] = useState(true);
     const [busqueda, setBusqueda] = useState("");
+    const [usuarioEditando, setUsuarioEditando] = useState(null); // usuario a editar
 
-    useEffect(() => {
+    const cargarUsuarios = () => {
+        setCargando(true);
         axios.get("http://localhost:8080/api/usuarios")
             .then(res => setUsuarios(res.data))
             .catch(() => setUsuarios([]))
             .finally(() => setCargando(false));
+    };
+
+    useEffect(() => {
+        cargarUsuarios();
     }, []);
+
+    const eliminarUsuario = async (id, nombre) => {
+        if (!window.confirm(`¿Eliminar definitivamente a "${nombre}"?`)) return;
+        try {
+            await axios.delete(`http://localhost:8080/api/usuarios/${id}`);
+            cargarUsuarios(); // refrescar tabla
+        } catch (err) {
+            alert("Error al eliminar el usuario");
+        }
+    };
+
+    const actualizarUsuarioEnLista = (usuarioActualizado) => {
+        setUsuarios(prev =>
+            prev.map(u => u.id === usuarioActualizado.id ? usuarioActualizado : u)
+        );
+    };
 
     const filtrados = usuarios.filter(u =>
         u.nombre?.toLowerCase().includes(busqueda.toLowerCase()) ||
@@ -108,7 +229,7 @@ function ModalAdmin({ onCerrar }) {
     return (
         <div className="fixed inset-0 z-[90] flex items-center justify-center p-4">
             <div className="absolute inset-0 bg-black/60 backdrop-blur-sm" onClick={onCerrar} />
-            <div className="relative bg-bg border border-border rounded-2xl shadow-2xl w-full max-w-2xl z-10 flex flex-col max-h-[85vh]">
+            <div className="relative bg-bg border border-border rounded-2xl shadow-2xl w-full max-w-3xl z-10 flex flex-col max-h-[85vh]">
 
                 <div className="flex items-center gap-3 p-5 border-b border-border shrink-0">
                     <div className="w-9 h-9 rounded-xl bg-primary/10 border border-primary/20 flex items-center justify-center shrink-0">
@@ -151,6 +272,7 @@ function ModalAdmin({ onCerrar }) {
                                         <th className="text-left px-4 py-3 text-xs font-bold text-text-muted uppercase tracking-wider">Usuario</th>
                                         <th className="text-left px-4 py-3 text-xs font-bold text-text-muted uppercase tracking-wider">Correo</th>
                                         <th className="text-left px-4 py-3 text-xs font-bold text-text-muted uppercase tracking-wider">Rol</th>
+                                        <th className="text-left px-4 py-3 text-xs font-bold text-text-muted uppercase tracking-wider">Acciones</th>
                                     </tr>
                                 </thead>
                                 <tbody>
@@ -176,6 +298,24 @@ function ModalAdmin({ onCerrar }) {
                                                     {u.rol ?? "usuario"}
                                                 </span>
                                             </td>
+                                            <td className="px-4 py-3">
+                                                <div className="flex items-center gap-2">
+                                                    <button
+                                                        onClick={() => setUsuarioEditando(u)}
+                                                        className="p-1.5 rounded-lg bg-primary/10 text-primary hover:bg-primary/20 transition-colors cursor-pointer"
+                                                        title="Editar usuario"
+                                                    >
+                                                        <span className="material-symbols-outlined text-sm">edit</span>
+                                                    </button>
+                                                    <button
+                                                        onClick={() => eliminarUsuario(u.id, u.nombre)}
+                                                        className="p-1.5 rounded-lg bg-red-500/10 text-red-500 hover:bg-red-500/20 transition-colors cursor-pointer"
+                                                        title="Eliminar usuario"
+                                                    >
+                                                        <span className="material-symbols-outlined text-sm">delete</span>
+                                                    </button>
+                                                </div>
+                                            </td>
                                         </tr>
                                     ))}
                                 </tbody>
@@ -191,11 +331,23 @@ function ModalAdmin({ onCerrar }) {
                     </button>
                 </div>
             </div>
+
+            {/* Modal de edición para administrador */}
+            {usuarioEditando && (
+                <ModalEditarUsuarioAdmin
+                    usuario={usuarioEditando}
+                    onCerrar={() => setUsuarioEditando(null)}
+                    onActualizado={(usuarioActualizado) => {
+                        actualizarUsuarioEnLista(usuarioActualizado);
+                        setUsuarioEditando(null);
+                    }}
+                />
+            )}
         </div>
     );
 }
 
-// ── Componente principal ─────────────────────────────────────────
+// ── Componente principal (sin cambios, solo se importa el ModalAdmin modificado) ──
 export default function Perfil({ onLogout }) {
     const [usuario, setUsuario] = useState(() => JSON.parse(sessionStorage.getItem("usuario") || "{}"));
     const [playlists, setPlaylists] = useState([]);
@@ -236,7 +388,7 @@ export default function Perfil({ onLogout }) {
         <MainLayout onLogout={onLogout}>
             <div className="max-w-3xl mx-auto">
 
-                {/* Avatar + nombre */}
+                {/* Avatar + nombre (igual) */}
                 <div className="flex flex-col items-center gap-4 py-8">
                     <div className="relative">
                         {usuario.avatar ? (
