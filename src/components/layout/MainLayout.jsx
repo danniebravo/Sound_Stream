@@ -5,7 +5,7 @@ import Player from "../player/Player";
 import { ThemeProvider } from "../context/ThemeContext";
 import { PlayerProvider } from "../context/PlayerContext";
 
-export default function MainLayout({ children, onLogout }) {
+export default function MainLayout({ children, onLogout, ocultarPlayer = false }) {
   return (
     <ThemeProvider>
       <PlayerProvider>
@@ -17,7 +17,7 @@ export default function MainLayout({ children, onLogout }) {
             <Footer />
           </div>
         </div>
-        <Player />
+        {!ocultarPlayer && <Player />}
       </PlayerProvider>
     </ThemeProvider>
   );

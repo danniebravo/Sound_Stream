@@ -6,6 +6,7 @@ import Buscar from '../pages/Buscar';
 import Perfil from '../pages/Perfil';
 import NotFound from '../pages/NotFound';
 import Biblioteca from '../pages/Biblioteca';
+import Dashboard from '../pages/Dashboard';
 
 export default function AppRouter() {
     const isAuthenticated = sessionStorage.getItem("usuario") !== null;
@@ -29,6 +30,7 @@ export default function AppRouter() {
                 <Route path="/buscar" element={isAuthenticated ? <Buscar onLogout={handleLogout} /> : <Navigate to="/login" />} />
                 <Route path="/perfil" element={isAuthenticated ? <Perfil onLogout={handleLogout} /> : <Navigate to="/login" />} />
                 <Route path="/biblioteca" element={isAuthenticated ? <Biblioteca onLogout={handleLogout} /> : <Navigate to="/login" />} />
+                <Route path="/dashboard" element={isAuthenticated ? <Dashboard onLogout={handleLogout} /> : <Navigate to="/login" />} />
                 <Route path="*" element={<NotFound onLogout={handleLogout} />} />
             </Routes>
         </BrowserRouter >

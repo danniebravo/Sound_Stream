@@ -1,6 +1,6 @@
 import { Link, useLocation } from 'react-router-dom';
 
-export default function Sidebar({onLogout}) {
+export default function Sidebar({ onLogout }) {
     const location = useLocation();
 
     return (
@@ -28,6 +28,16 @@ export default function Sidebar({onLogout}) {
                 <Link to="/perfil" className={`flex items-center gap-3 px-3 py-2.5 rounded-lg text-sm font-medium no-underline ${location.pathname === "/perfil" ? "bg-primary/10 text-primary" : "text-text hover:bg-primary/10"}`}>
                     <span className="material-symbols-outlined text-xl">person</span>
                     Mi perfil
+                </Link>
+                <Link
+                    to="/dashboard"
+                    className={`flex items-center gap-3 px-3 py-2.5 rounded-lg text-sm font-medium no-underline ${location.pathname === "/dashboard"
+                        ? "bg-primary/10 text-primary"
+                        : "text-text hover:bg-primary/10"
+                        }`}
+                >
+                    <span className="material-symbols-outlined text-xl">analytics</span>
+                    Dashboard
                 </Link>
                 <button onClick={onLogout} className="flex items-center gap-3 px-3 py-2.5 rounded-lg text-sm font-medium no-underline text-text hover:bg-primary/10 cursor-pointer">
                     <span className="material-symbols-outlined text-xl">logout</span>
